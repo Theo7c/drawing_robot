@@ -13,7 +13,7 @@ from sensor_msgs.msg import JointState
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Point 
 
-# Kinematic parameters matching your robot_arm.urdf (180 mm = 0.18 m)
+# Kinematic parameters matching robot_arm.urdf (180 mm = 0.18 m)
 L1 = 0.18
 L2 = 0.18
 
@@ -22,12 +22,10 @@ class PlanarArmPublisher(Node):
         super().__init__('planar_arm_publisher')
 
         # 1. Create Publishers
-        # Queue size of 10 keeps latency low; old messages are dropped if unconsumed
         self.joint_pub = self.create_publisher(JointState, '/joint_states', 10)
         self.marker_pub = self.create_publisher(Marker, '/pen_trail', 10)
 
         # 2. Load Trajectory
-        # Expected shape: (N, 4) -> [theta1_R, theta2_R, theta1_L, theta2_L]
         try:
             self.trajectory = np.load('trajectory_angles.npy')
             self.num_points = len(self.trajectory)
@@ -41,7 +39,6 @@ class PlanarArmPublisher(Node):
         self.trail_points = []
 
         # 4. Initialize 50 Hz Loop Timer
-        # 1 / 50 Hz = 0.02 seconds = 20 milliseconds
         timer_period = 0.02
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.get_logger().info("50 Hz control loop running. Publishing to /joint_states...")
@@ -52,9 +49,7 @@ class PlanarArmPublisher(Node):
 
         now = self.get_clock().now().to_msg()
 
-        # ==========================================
-        # 1. CONSTRUCT & PUBLISH JOINT STATE
-        # ==========================================
+
         joint_msg = JointState()
         joint_msg.header.stamp = now
         joint_msg.header.frame_id = 'base_link'
@@ -77,9 +72,7 @@ class PlanarArmPublisher(Node):
 
         self.joint_pub.publish(joint_msg)
 
-        # ==========================================
-        # 2. CONSTRUCT & PUBLISH DRAWING TRAIL
-        # ==========================================
+        
         # Calculate pen tip (x, y) via Forward Kinematics on right arm chain
         theta_shoulder = q[0]
         theta_elbow = q[1]
@@ -108,9 +101,7 @@ class PlanarArmPublisher(Node):
         marker.points = self.trail_points
         self.marker_pub.publish(marker)
 
-        # ==========================================
-        # 3. ADVANCE TRAJECTORY INDEX
-        # ==========================================
+        #Advance trajectory index
         self.idx += 1
         if self.idx >= self.num_points:
             self.idx = 0

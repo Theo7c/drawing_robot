@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="drawing_arm">
 
-  <!-- ==================== MATERIALS ==================== -->
+  <!--creating different coloured materials-->>
   <material name="dark_grey">
     <color rgba="0.2 0.2 0.2 1.0"/>
   </material>
@@ -18,7 +18,7 @@
     <color rgba="0.9 0.1 0.1 1.0"/>
   </material>
 
-  <!-- ==================== BASE LINK (0, 0, 0) ==================== -->
+  <!-- base link at the origin -->
   <link name="base_link">
     <visual>
       <origin xyz="0 0 0.005" rpy="0 0 0"/>
@@ -29,11 +29,8 @@
     </visual>
   </link>
 
-  <!-- ================================================================= -->
-  <!--                     LEFT / UPPER ARM CHAIN                        -->
-  <!-- ================================================================= -->
 
-  <!-- 1. Left Shoulder Joint at (0, 0) -->
+
   <joint name="left_shoulder_joint" type="revolute">
     <parent link="base_link"/>
     <child link="left_upper_arm"/>
@@ -43,7 +40,7 @@
   </joint>
 
   <link name="left_upper_arm">
-    <!-- Main Link Bar (L1 = 0.18m, shifted by L1/2 = 0.09m) -->
+    <!-- link bar -->
     <visual>
       <origin xyz="0.09 0 0" rpy="0 0 0"/>
       <geometry>
@@ -51,7 +48,7 @@
       </geometry>
       <material name="arm_blue"/>
     </visual>
-    <!-- Rounded Hub at Shoulder (0, 0) -->
+    <!-- shoulder hub -->
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -61,7 +58,6 @@
     </visual>
   </link>
 
-  <!-- 2. Left Elbow Joint at (L1 = 0.18, 0) -->
   <joint name="left_elbow_joint" type="revolute">
     <parent link="left_upper_arm"/>
     <child link="left_forearm"/>
@@ -71,7 +67,7 @@
   </joint>
 
   <link name="left_forearm">
-    <!-- Distal Link Bar (L2 = 0.18m, shifted by L2/2 = 0.09m) -->
+    <!-- link bar -->
     <visual>
       <origin xyz="0.09 0 0" rpy="0 0 0"/>
       <geometry>
@@ -79,17 +75,17 @@
       </geometry>
       <material name="arm_blue"/>
     </visual>
-    <!-- Rounded Hub at Left Elbow -->
+    <!-- elbow hub -->
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.005" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.012" length="0.01"/>
+        <cylinder radius="0.012" length="0.018"/>
       </geometry>
       <material name="joint_silver"/>
     </visual>
   </link>
 
-  <!-- 3. Fixed Pen Tip at End of Left Forearm (L2 = 0.18, 0) -->
+  
   <joint name="pen_tip_joint" type="fixed">
     <parent link="left_forearm"/>
     <child link="pen_tip"/>
@@ -106,11 +102,9 @@
     </visual>
   </link>
 
-  <!-- ================================================================= -->
-  <!--                    RIGHT / MIRRORED ARM CHAIN                     -->
-  <!-- ================================================================= -->
+ 
 
-  <!-- 4. Right Shoulder Joint Concentric at (0, 0) -->
+  
   <joint name="right_shoulder_joint" type="revolute">
     <parent link="base_link"/>
     <child link="right_upper_arm"/>
@@ -120,7 +114,7 @@
   </joint>
 
   <link name="right_upper_arm">
-    <!-- Main Link Bar (L1 = 0.18m, shifted by L1/2 = 0.09m) -->
+    <!-- link bar -->
     <visual>
       <origin xyz="0.09 0 0" rpy="0 0 0"/>
       <geometry>
@@ -128,17 +122,17 @@
       </geometry>
       <material name="arm_orange"/>
     </visual>
-    <!-- Rounded Hub at Shoulder (0, 0) -->
+    <!-- Shoulder hub -->
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.005" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.014" length="0.008"/>
+        <cylinder radius="0.014" length="0.018"/>
       </geometry>
       <material name="joint_silver"/>
     </visual>
   </link>
 
-  <!-- 5. Right Elbow Joint at (L1 = 0.18, 0) -->
+  
   <joint name="right_elbow_joint" type="revolute">
     <parent link="right_upper_arm"/>
     <child link="right_forearm"/>
@@ -148,7 +142,7 @@
   </joint>
 
   <link name="right_forearm">
-    <!-- Distal Link Bar (L2 = 0.18m, shifted by L2/2 = 0.09m) -->
+    <!-- link bar -->
     <visual>
       <origin xyz="0.09 0 0" rpy="0 0 0"/>
       <geometry>
@@ -156,11 +150,11 @@
       </geometry>
       <material name="arm_orange"/>
     </visual>
-    <!-- Rounded Hub at Right Elbow -->
+    <!-- elbow hub -->
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0.005" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="0.012" length="0.01"/>
+        <cylinder radius="0.012" length="0.018"/>
       </geometry>
       <material name="joint_silver"/>
     </visual>

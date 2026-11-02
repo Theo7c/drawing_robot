@@ -166,36 +166,6 @@ python3 arm_publisher.py
 
 ---
 
-## Converting Your RViz2 Video into a GIF for the README
-
-To convert your screen recording of RViz2 into a crisp, fast-loading GIF (`rviz2_demo.gif`) that preserves the thin $2\text{ mm}$ ink trail without color banding, use `ffmpeg`'s two-pass palette filter:
-
-### 1. Install `ffmpeg`
-```bash
-sudo apt update && sudo apt install ffmpeg -y
-```
-
-### 2. Generate a High-Clarity Optimized GIF
-Run the following command in the directory containing your video (replace `input_video.mp4` with your video filename):
-
-```bash
-ffmpeg -i input_video.mp4 -vf "fps=15,scale=800:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" -loop 0 rviz2_demo.gif
-```
-
-* **Optional — Speed Up & Trim Long Recordings:** If your drawing video is long and you want a $2\times$ speed loop starting at `00:00:02` for $20\text{ seconds}$:
-  ```bash
-  ffmpeg -ss 00:00:02 -t 00:00:20 -i input_video.mp4 -vf "setpts=0.5*PTS,fps=15,scale=800:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" -loop 0 rviz2_demo.gif
-  ```
-
-### 3. Add to Your Repository
-Place `rviz2_demo.gif` in the root folder next to `README.md`, then commit and push:
-
-```bash
-git add rviz2_demo.gif README.md
-git commit -m "Add README documentation and RViz2 simulation GIF"
-git push
-```
-
 ---
 
 ## Future Work & Hardware Roadmap
